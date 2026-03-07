@@ -20,7 +20,6 @@ fn load_books(filename: &str) -> Vec<Book> {
     // Open the file for reading
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
-
     let mut books = Vec::new();
 
     // Read each line
@@ -29,9 +28,7 @@ fn load_books(filename: &str) -> Vec<Book> {
         if i == 0 {
             continue;
         }
-
         let line = line.unwrap();
-
         // Split by commas
         let mut parts = line.split(',');
         // Take each value from the split line: title, author, and year 
