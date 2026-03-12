@@ -10,16 +10,22 @@ impl BankAccount {
     }
 
     pub fn deposit(&mut self, amount: f64) {
+         if amount < 0.0 {
+            return;
+        }
         self.balance += amount;
-        // Implement this method
     }
 
+    
+
     pub fn withdraw(&mut self, amount: f64) {
-        if self.balance >= amount {
-            self.balance -= amount;
-        } else {
-            println!("Insufficient funds");//if there is no more will print this
+         if amount < 0.0 {
+            return;
         }
+        if amount > self.balance {
+            return;
+        }
+        self.balance -= amount;
         // Implement this method
     }
 
@@ -35,27 +41,24 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_new_account() {
-        // Write a test for creating a new account
-        let account = BankAccount::new(300.0); // will start with $300
-        assert_eq!(account.balance(), 300.0);
+    fn test_negative_deposit() {
+        let mut account = BankAccount::new(100.0);
+        account.deposit(-50.0); 
+        assert_eq!(account.balance(), 100.0);
     }
 
     #[test]
-    fn test_deposit() {
-        // Write a test for depositing money
-        let mut account = BankAccount::new(200.0); // new account with $200
-        account.deposit(100.0); // deposit $100
-        assert_eq!(account.balance(), 300.0); // should now be $300
+    fn test_negative_withdraw() {
+        let mut account = BankAccount::new(100.0);
+        account.withdraw(-20.0); 
+        assert_eq!(account.balance(), 100.0);
     }
 
     #[test]
-    fn test_withdraw() {
-        // Write a test for withdrawing money
-        let mut account = BankAccount::new(200.0); // start with $200
-        account.withdraw(50.50); // withdraw $80
-        assert_eq!(account.balance(), 149.5); // should now be $120
+    fn test_overdraft_attempt() {
+        let mut account = BankAccount::new(100.0);
+        account.withdraw(200.0); 
+        assert_eq!(account.balance(), 100.0);
     }
-
     // Add more tests here
 }
